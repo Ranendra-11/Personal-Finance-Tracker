@@ -50,7 +50,7 @@ The **Personal Finance Tracker** is a responsive web application designed to hel
 - Develop a mobile-friendly PWA (Progressive Web App).
 
 ## Contributors
-- **Your Name** – Developer & Maintainer
+- **Ranendra Reddy** – Developer & Maintainer
 
 ## License
 This project is licensed under the MIT License.
