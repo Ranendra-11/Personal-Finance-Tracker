@@ -1,0 +1,59 @@
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+
+const FinanceTracker = () => {
+    const [transactions, setTransactions] = useState([]);
+    const [amount, setAmount] = useState('');
+    const [category, setCategory] = useState('');
+    const [type, setType] = useState('income');
+    const userId = '12345'; // Replace with dynamic user authentication
+
+    useEffect(() => {
+        axios.get(`http://localhost:5000/transactions/${userId}`)
+            .then(response => setTransactions(response.data))
+            .catch(error => console.error('Error fetching transactions:', error));
+    }, []);
+
+    const addTransaction = () => {
+        const newTransaction = { userId, type, amount, category };
+        axios.post('http://localhost:5000/transactions', newTransaction)
+            .then(response => {
+                setTransactions([...transactions, newTransaction]);
+                setAmount('');
+                setCategory('');
+            })
+            .catch(error => console.error('Error adding transaction:', error));
+    };
+
+    return (
+        <div>
+            <h2>Finance Tracker</h2>
+            <div>
+                <input
+                    type="number"
+                    value={amount}
+                    onChange={(e) => setAmount(e.target.value)}
+                    placeholder="Amount"
+                />
+                <input
+                    type="text"
+                    value={category}
+                    onChange={(e) => setCategory(e.target.value)}
+                    placeholder="Category"
+                />
+                <select value={type} onChange={(e) => setType(e.target.value)}>
+                    <option value="income">Income</option>
+                    <option value="expense">Expense</option>
+                </select>
+                <button onClick={addTransaction}>Add Transaction</button>
+            </div>
+            <ul>
+                {transactions.map((t, index) => (
+                    <li key={index}>{t.type}: ${t.amount} - {t.category}</li>
+                ))}
+            </ul>
+        </div>
+    );
+};
+
+export default FinanceTracker;
